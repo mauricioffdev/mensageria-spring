@@ -26,4 +26,27 @@ public class EmailController {
 
         return ResponseEntity.ok("Campanha disparada com sucesso a partir do CSV!");
     }
+
+    @PostMapping("/disparar-com-pdf")
+    public ResponseEntity<String> dispararComPdf(
+            @RequestParam("csv") MultipartFile arquivoCsv,
+            @RequestParam("pdf") MultipartFile arquivoPdf,
+            @RequestParam("assunto") String assunto,
+            @RequestParam("conteudo") String conteudoHtml) {
+
+        emailService.dispararCampanhaComPdf(arquivoCsv, arquivoPdf, assunto, conteudoHtml);
+
+        return ResponseEntity.ok("Campanha com HTML e PDF disparada com sucesso!");
+    }
+
+    @PostMapping("/disparar-banco")
+    public ResponseEntity<String> dispararBanco(
+            @RequestParam("pdf") MultipartFile arquivoPdf,
+            @RequestParam("assunto") String assunto,
+            @RequestParam("conteudo") String conteudoHtml) {
+
+        String resultado = emailService.dispararCampanhaDoBanco(arquivoPdf, assunto, conteudoHtml);
+
+        return ResponseEntity.ok(resultado);
+    }
 }

@@ -20,14 +20,18 @@ public class Aluno implements Serializable {
 
     private Boolean ativo;
 
+    @Column(nullable = false)
+    private Boolean emailEnviado = false;
+
     public Aluno() {
     }
 
-    public Aluno(Long id, String nome, String email, Boolean ativo) {
+    public Aluno(Long id, String nome, String email, Boolean ativo, Boolean emailEnviado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.ativo = ativo;
+        this.emailEnviado = emailEnviado;
     }
 
     public Long getId() {
@@ -43,6 +47,9 @@ public class Aluno implements Serializable {
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+
+    public Boolean getEmailEnviado() { return emailEnviado; }
+    public void setEmailEnviado(Boolean emailEnviado) { this.emailEnviado = emailEnviado; }
 
     @Override
     public boolean equals(Object o) {

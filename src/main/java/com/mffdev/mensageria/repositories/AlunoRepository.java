@@ -10,4 +10,6 @@ import java.util.List;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     List<Aluno> findByAtivoTrue();
+
+    List<Aluno> findByEmailEnviadoFalse();
 }
