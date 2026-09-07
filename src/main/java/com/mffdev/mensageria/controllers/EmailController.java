@@ -1,6 +1,7 @@
 package com.mffdev.mensageria.controllers;
 
 import com.mffdev.mensageria.services.EmailService;
+import com.mffdev.mensageria.services.EnvioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,9 @@ public class EmailController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private EnvioService envioService;
 
     @PostMapping("/disparar-csv")
     public ResponseEntity<String> dispararViaCsv(
@@ -39,13 +43,22 @@ public class EmailController {
         return ResponseEntity.ok("Campanha com HTML e PDF disparada com sucesso!");
     }
 
+    @PostMapping("/testar")
+    public ResponseEntity<String> testarEnvio(
+            @RequestParam("campanhaId") Long campanhaId,
+            @RequestParam("email") String email) {
+
+        envioService.enviarEmailTeste(campanhaId, email);
+
+        return ResponseEntity.ok("E-mail de teste enviado com sucesso para " + email + "!");
+    }
+
     @PostMapping("/disparar-banco")
     public ResponseEntity<String> dispararBanco(
-            @RequestParam("pdf") MultipartFile arquivoPdf,
-            @RequestParam("assunto") String assunto,
-            @RequestParam("conteudo") String conteudoHtml) {
+            @RequestParam("campanhaId") Long campanhaId,
+            @RequestParam(value = "apenasNovos", defaultValue = "false") boolean apenasNovos) {
 
-        String resultado = emailService.dispararCampanhaDoBanco(arquivoPdf, assunto, conteudoHtml);
+        String resultado = envioService.dispararCampanha(campanhaId, apenasNovos);
 
         return ResponseEntity.ok(resultado);
     }
